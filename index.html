@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynr - Restaurant Booking & Food Ordering</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Satoshi:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Fredoka:wght@300..700&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Tiny5&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+    <!-- Main Restaurant Listing Page -->
+    <div id="restaurantPage" class="page active">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">Dynr</h1>
+                <div class="search-bar">
+                    <i data-feather="search"></i>
+                    <input type="text" placeholder="   Search nearby restaurants..." id="searchInput">
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="restaurants-grid" id="restaurantsGrid">
+                <!-- Restaurant cards will be populated by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Menu Page -->
+    <div id="menuPage" class="page">
+        <div class="menu-header">
+            <button class="back-btn" id="backBtn">
+                <i data-feather="arrow-left"></i>
+            </button>
+            <div id="curr-rest"></div>
+            <div class="menu-header-actions">
+                <button class="header-action-btn table-btn" id="tableBtn">
+                    <img src="./table.svg" alt="" class="table-select">
+                </button>
+                <button class="header-action-btn cart-btn" id="cartBtn">
+                    <i data-feather="shopping-cart"></i>
+                    <span class="cart-count" id="cartCount"></span>
+                </button>
+            </div>
+        </div>
+
+        
+
+        <div class="advanced-filters-container">
+            <div class="filters-section">
+                <h4>Categories</h4>
+                <div class="filters" id="categoryFilters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="Main Course">Main Course</button>
+                    <button class="filter-btn" data-filter="Appetizers">Appetizers</button>
+                    <button class="filter-btn" data-filter="Rice">Rice</button>
+                    <button class="filter-btn" data-filter="Breads">Breads</button>
+                    <button class="filter-btn" data-filter="Desserts">Desserts</button>
+                    <button class="filter-btn" data-filter="Beverages">Beverages</button>
+                </div>
+            </div>
+
+            <div class="filters-section">
+                <h4>Dietary</h4>
+                <div class="filters" id="dietaryFilters">
+                    <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
+                    <button class="filter-btn" data-filter="vegan">Vegan</button>
+                    <button class="filter-btn" data-filter="gluten-free">Gluten Free</button>
+                    <button class="filter-btn" data-filter="protein-rich">High Protein</button>
+                </div>
+            </div>
+
+            <div class="filters-section">
+
+            </div>
+        </div>
+
+        <div class="menu-items" id="menuItems">
+            <!-- Menu items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Dish Detail Bottom Sheet -->
+    <div id="dishBottomSheet" class="bottom-sheet">
+        <div class="bottom-sheet-backdrop"></div>
+        <div class="bottom-sheet-content">
+            <div class="bottom-sheet-header">
+                <div class="sheet-handle"></div>
+                <button class="close-sheet" id="closeDishSheet">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="bottom-sheet-body" id="dishSheetBody">
+                <!-- Dish details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Selection Modal -->
+    <div id="tableModal" class="modal">
+        <div class="modal-content table-modal-content">
+            <div class="modal-header">
+                <h3>Select Your Table</h3>
+                <button class="close-modal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="tables-grid" id="tablesGrid">
+                <!-- Tables will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-full-width" id="confirmTable" disabled>
+                    <i data-feather="check"></i>
+                    Confirm Table Selection
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content booking-modal-content">
+            <div class="modal-header">
+                <h3>Reserve Your Table</h3>
+                <button class="close-modal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form class="booking-form" id="bookingForm">
+                <div class="form-group">
+                    <label for="bookingDate">Date</label>
+                    <input type="date" id="bookingDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingTime">Time</label>
+                    <select id="bookingTime" class="form-control" required>
+                        <option value="">Select time</option>
+                        <option value="18:00">6:00 PM</option>
+                        <option value="18:30">6:30 PM</option>
+                        <option value="19:00">7:00 PM</option>
+                        <option value="19:30">7:30 PM</option>
+                        <option value="20:00">8:00 PM</option>
+                        <option value="20:30">8:30 PM</option>
+                        <option value="21:00">9:00 PM</option>
+                        <option value="21:30">9:30 PM</option>
+                        <option value="22:00">10:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookingPeople">Party Size</label>
+                    <select id="bookingPeople" class="form-control" required>
+                        <option value="">Select people</option>
+                        <option value="1">1 Person</option>
+                        <option value="2">2 People</option>
+                        <option value="3">3 People</option>
+                        <option value="4">4 People</option>
+                        <option value="5">5 People</option>
+                        <option value="6">6 People</option>
+                        <option value="7">7 People</option>
+                        <option value="8">8 People</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookingName">Full Name</label>
+                    <input type="text" id="bookingName" class="form-control" placeholder="Enter your full name"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingPhone">Phone Number</label>
+                    <input type="tel" id="bookingPhone" class="form-control" placeholder="Enter your phone number"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingSpecial">Special Requests (Optional)</label>
+                    <textarea id="bookingSpecial" class="form-control" rows="3"
+                        placeholder="Any special requests or dietary requirements..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full-width">
+                    <i data-feather="calendar"></i>
+                    Reserve Table
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content cart-modal-content">
+            <div class="modal-header">
+                <h3>Your Order</h3>
+                <button class="close-modal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be populated by JavaScript -->
+            </div>
+            <div class="cart-summary" id="cartSummary">
+                <!-- Cart summary will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Animation -->
+    <div id="successAnimation" class="success-animation">
+        <div class="success-content">
+            <div class="success-icon">
+                <i data-feather="check-circle"></i>
+            </div>
+            <div id="successMessage">Success!</div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+    </script>
+</body>
+
+</html>
