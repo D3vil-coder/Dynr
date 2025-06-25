@@ -7,7 +7,7 @@ class DynrApp {
         this.activeFilters = {
             category: 'all',
             dietary: [],
-            price: []
+          
         };
         this.init();
     }
@@ -605,15 +605,7 @@ class DynrApp {
                 } else {
                     this.activeFilters.dietary = this.activeFilters.dietary.filter(f => f !== filterValue);
                 }
-            } else if (filterType.querySelector('h4').textContent === 'Price Range') {
-                if (button.classList.contains('active')) {
-                    if (!this.activeFilters.price.includes(filterValue)) {
-                        this.activeFilters.price.push(filterValue);
-                    }
-                } else {
-                    this.activeFilters.price = this.activeFilters.price.filter(f => f !== filterValue);
-                }
-            }
+            } 
         }
 
         this.applyFilters();
@@ -641,20 +633,11 @@ class DynrApp {
                 }
             }
 
-            // Price filters
-            if (this.activeFilters.price.length > 0) {
-                const hasPriceMatch = this.activeFilters.price.some(priceRange => {
-                    if (priceRange === 'under-200') return itemData.price < 200;
-                    if (priceRange === '200-350') return itemData.price >= 200 && itemData.price <= 350;
-                    if (priceRange === 'above-350') return itemData.price > 350;
-                    return false;
-                });
-                if (!hasPriceMatch) {
-                    shouldShow = false;
-                }
-            }
+            
+            
 
-            item.style.display = shouldShow ? 'flex' : 'none';
+            item.style.display = shouldShow ? 'block' : 'none';
+            
         });
     }
 
